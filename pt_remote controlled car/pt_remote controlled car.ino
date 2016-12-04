@@ -247,10 +247,11 @@ static int thread5_entry(struct pt * pt)
   PT_BEGIN(pt);
   while (1)
   {
-    Serial.println("alarm");
 
     //backward buzz or alarm
     if ( digitalRead(M12) == 0 || digitalRead(M31) == 0 ) {
+
+      Serial.println("alarm");
 
       tone(5, 100);
       PT_TIMER_DELAY(pt, 1000);
