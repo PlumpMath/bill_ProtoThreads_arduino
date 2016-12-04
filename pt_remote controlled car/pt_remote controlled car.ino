@@ -311,7 +311,7 @@ static int thread8_entry(struct pt * pt)
   PT_BEGIN(pt);
   while (1)
   {
-    if ( isChange(M32) == 1 ) {
+    if ( digitalRead(M32) != laststate[M32 - 30] && laststate[M32 - 30] == 1 ) {
 
       Serial.println("break");
       isStop = true;
@@ -323,7 +323,11 @@ static int thread8_entry(struct pt * pt)
       digitalWrite(LAO1, LOW);
       digitalWrite(LAO2, LOW);
 
-      PT_TIMER_DELAY(pt, 100);
+      laststate[M32 - 30] = digitalRead(M32);
+    }
+
+    else if ( digitalRead(M32) != laststate[M32 - 30] && laststate[M32 - 30] == 0 ) {
+      laststate[M32 - 30] = digitalRead(M32);
       isStop = false;
     }
 
