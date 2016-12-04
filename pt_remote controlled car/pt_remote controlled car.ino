@@ -323,7 +323,7 @@ static int thread8_entry(struct pt * pt)
       digitalWrite(LAO1, LOW);
       digitalWrite(LAO2, LOW);
 
-      PT_TIMER_DELAY(pt, 5000);
+      PT_TIMER_DELAY(pt, 100);
       isStop = false;
     }
 
