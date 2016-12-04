@@ -9,7 +9,7 @@ void recive();
 
 void setup() {
   //Set Hardware
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   pinMode(2, OUTPUT);
   pinMode(3, OUTPUT);
@@ -149,6 +149,7 @@ static int thread8_entry(struct pt * pt) {
       int p = Serial.parseInt();
       if (Serial.read() == 'X') {
 
+        Serial.println(p);
         if ( 11 == p ) state1 = 1;
         else if ( 12 == p ) state1 = 0;
         else if ( 21 == p ) state2 = 1;
@@ -174,13 +175,15 @@ static int thread8_entry(struct pt * pt) {
 void loop() {
   //Check each thread by priority
 
-  thread8_entry(&thread8);
+  Serial.println(Serial.read());
+
+  /*thread8_entry(&thread8);
   thread1_entry(&thread1);
   thread2_entry(&thread2);
   thread3_entry(&thread3);
   thread4_entry(&thread4);
   thread5_entry(&thread5);
   thread6_entry(&thread6);
-  thread7_entry(&thread7);
+  thread7_entry(&thread7);*/
 
 }
