@@ -5,7 +5,7 @@
 static struct pt thread1, thread2, thread3, thread4, thread5, thread6, thread7, thread8;
 
 int laststate[8] = {1};
-bool isStop = false;
+int isStop = 0;
 
 const int M11 = 30;
 const int M12 = 31;
@@ -89,9 +89,9 @@ static int thread1_entry(struct pt *pt)
   {
     //if forward btn is pressed
     if(isChange(M11) == 1)
-      isStop = false;
+      isStop = 0;
     
-    if ( isStop == false && digitalRead(M11) == 0 ) {
+    if ( isStop == 0 && digitalRead(M11) == 0 ) {
 
       digitalWrite(BREAK, LOW);
       digitalWrite(R3, LOW);
@@ -119,6 +119,7 @@ static int thread1_entry(struct pt *pt)
       }
 
     }
+    
     PT_YIELD(pt); //Check the other events.
   }
 
@@ -131,10 +132,10 @@ static int thread2_entry(struct pt *pt)
   PT_BEGIN(pt);
   while (1)
   {
-    if(isChange(M12) == true)
-      isStop = false;
+    if(isChange(M12) == 1)
+      isStop = 0;
       
-    if ( isStop == false && digitalRead(M12) == 0 ) {
+    if ( isStop == 0 && digitalRead(M12) == 0 ) {
 
       digitalWrite(BREAK, LOW);
       digitalWrite(R3, LOW);
@@ -174,10 +175,10 @@ static int thread3_entry(struct pt *pt)
   PT_BEGIN(pt);
   while (1)
   {
-    if(isChange(M21) == true)
-      isStop = false;
+    if(isChange(M21) == 1)
+      isStop = 0;
 
-    if ( isStop == false && digitalRead(M21) == 0 ) {
+    if ( isStop == 0 && digitalRead(M21) == 0 ) {
 
       Serial.println("turn left");
       LAplace = analogRead(LAI);
@@ -217,10 +218,10 @@ static int thread4_entry(struct pt * pt)
   PT_BEGIN(pt);
   while (1)
   {
-    if(isChange(M22) == true)
-      isStop = false;
+    if(isChange(M22) == 1)
+      isStop = 0;
       
-    if ( isStop == false && digitalRead(M22) == 0 ) {
+    if ( isStop == 0 && digitalRead(M22) == 0 ) {
 
       Serial.println("turn right");
       LAplace = analogRead(LAI);
@@ -258,11 +259,11 @@ static int thread5_entry(struct pt * pt)
   PT_BEGIN(pt);
   while (1)
   {
-    if(isChange(M12) == true || isChange(M31) == true)
-      isStop = false;
+    if(isChange(M12) == 1 || isChange(M31) == 1)
+      isStop = 0;
       
     //backward buzz or alarm
-    if ( isStop == false && (digitalRead(M12) == 0 || digitalRead(M31) == 0) ) {
+    if ( isStop == 0 && (digitalRead(M12) == 0 || digitalRead(M31) == 0) ) {
 
       Serial.println("alarm");
 
@@ -283,10 +284,10 @@ static int thread6_entry(struct pt * pt)
   PT_BEGIN(pt);
   while (1)
   {
-    if(isChange(M41) == true)
-      isStop = false;
+    if(isChange(M41) == 1)
+      isStop = 0;
       
-    if ( isStop == false && digitalRead(M41) == 0 ) {
+    if ( isStop == 0 && digitalRead(M41) == 0 ) {
 
       Serial.println("left sign");
       digitalWrite(LLED, HIGH);
@@ -306,10 +307,10 @@ static int thread7_entry(struct pt * pt)
   PT_BEGIN(pt);
   while (1)
   {
-    if(isChange(M42) == true)
-      isStop = false;
+    if(isChange(M42) == 1)
+      isStop = 0;
       
-    if ( isStop == false && digitalRead(M42) == 0 ) {
+    if ( isStop == 0 && digitalRead(M42) == 0 ) {
 
       Serial.println("right sign");
       digitalWrite(RLED, HIGH);
@@ -329,10 +330,10 @@ static int thread8_entry(struct pt * pt)
   PT_BEGIN(pt);
   while (1)
   {
-    if ( digitalRead(M32) != laststate[M32 - 30] && laststate[M32 - 30] == 1 ) {
+    if ( isChange(M32) == 1 ) {
 
       Serial.println("break");
-      isStop = true;
+      isStop = 1;
       digitalWrite(BREAK, LOW);
       digitalWrite(R3, LOW);
       digitalWrite(R4, LOW);
@@ -340,13 +341,6 @@ static int thread8_entry(struct pt * pt)
 
       digitalWrite(LAO1, LOW);
       digitalWrite(LAO2, LOW);
-
-      laststate[M32 - 30] = digitalRead(M32);
-    }
-
-    else if ( digitalRead(M32) != laststate[M32 - 30] && laststate[M32 - 30] == 0 ) {
-      laststate[M32 - 30] = digitalRead(M32);
-      isStop = false;
     }
 
     PT_YIELD(pt); //Check the other events.
@@ -377,7 +371,8 @@ int isChange(int pinNum) {
 
 void loop() {
   //Check each thread by priority
-
+  
+  thread8_entry(&thread8);
   thread1_entry(&thread1);
   thread2_entry(&thread2);
   thread3_entry(&thread3);
@@ -385,6 +380,5 @@ void loop() {
   thread5_entry(&thread5);
   thread6_entry(&thread6);
   thread7_entry(&thread7);
-  thread8_entry(&thread8);
-
+  
 }
