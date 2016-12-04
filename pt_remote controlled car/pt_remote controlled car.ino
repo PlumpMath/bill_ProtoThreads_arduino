@@ -164,6 +164,7 @@ static int thread2_entry(struct pt *pt)
 //turn left
 static int thread3_entry(struct pt *pt)
 {
+  static int LAplace;
   PT_BEGIN(pt);
   while (1)
   {
@@ -183,13 +184,13 @@ static int thread3_entry(struct pt *pt)
       }
 
       //if backward
-      if (state1 == 0) {
+      if (digitalRead(M11) == 0) {
         analogWrite(LFW, 200);
         analogWrite(RFW, 210);
         analogWrite(RRW, 200);
       }
 
-      if (state2 == 0) {
+      if (digitalRead(M12) == 0) {
         analogWrite(LFW, 150);
         analogWrite(RFW, 160);
         analogWrite(RRW, 150);
@@ -204,6 +205,7 @@ static int thread3_entry(struct pt *pt)
 //turn right
 static int thread4_entry(struct pt * pt)
 {
+  static int LAplace;
   PT_BEGIN(pt);
   while (1)
   {
@@ -221,15 +223,15 @@ static int thread4_entry(struct pt * pt)
       }
 
       //if backward
-      if (state1 == 0) {
-        analogWrite(LFW, 210);
-        analogWrite(RFW, 200);
+      if (digitalRead(M11) == 0) {
+        analogWrite(LFW, 200);
+        analogWrite(RFW, 210);
         analogWrite(RRW, 200);
       }
 
-      if (state2 == 0) {
-        analogWrite(LFW, 160);
-        analogWrite(RFW, 150);
+      if (digitalRead(M12) == 0) {
+        analogWrite(LFW, 150);
+        analogWrite(RFW, 160);
         analogWrite(RRW, 150);
       }
     }
