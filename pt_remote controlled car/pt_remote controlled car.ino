@@ -311,7 +311,7 @@ static int thread8_entry(struct pt * pt)
   PT_BEGIN(pt);
   while (1)
   {
-    if ( digitalRead(M32) == 0 ) {
+    if ( isChange(M32) == 1 ) {
 
       Serial.println("break");
       digitalWrite(BREAK, LOW);
