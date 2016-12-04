@@ -175,7 +175,13 @@ static int thread8_entry(struct pt * pt) {
 void loop() {
   //Check each thread by priority
 
-  Serial.println(Serial.read());
+  while (Serial.available() > 0) {
+      char c = Serial.read();
+      if (c != -1) {
+        Serial.println("recieve");
+        Serial.println(c);
+      }
+    }
 
   /*thread8_entry(&thread8);
   thread1_entry(&thread1);
