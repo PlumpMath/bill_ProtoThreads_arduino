@@ -5,6 +5,7 @@
 static struct pt thread1, thread2, thread3, thread4, thread5, thread6, thread7, thread8;
 
 int laststate[8] = {1};
+bool isStop = false;
 
 const int M11 = 30;
 const int M12 = 31;
@@ -87,7 +88,7 @@ static int thread1_entry(struct pt *pt)
   while (1)
   {
     //if forward btn is pressed
-    if ( digitalRead(M11) == 0 ) {
+    if ( digitalRead(M11) == 0 && !isStop ) {
 
       digitalWrite(BREAK, LOW);
       digitalWrite(R3, LOW);
@@ -127,7 +128,7 @@ static int thread2_entry(struct pt *pt)
   PT_BEGIN(pt);
   while (1)
   {
-    if (digitalRead(M12) == 0) {
+    if ( digitalRead(M12) == 0 && !isStop ) {
 
       digitalWrite(BREAK, LOW);
       digitalWrite(R3, LOW);
@@ -168,7 +169,7 @@ static int thread3_entry(struct pt *pt)
   while (1)
   {
 
-    if (digitalRead(M21) == 0) {
+    if ( digitalRead(M21) == 0 && !isStop ) {
 
       Serial.println("turn left");
       LAplace = analogRead(LAI);
@@ -208,7 +209,7 @@ static int thread4_entry(struct pt * pt)
   PT_BEGIN(pt);
   while (1)
   {
-    if (digitalRead(M22) == 0) {
+    if ( digitalRead(M22) == 0 && !isStop ) {
 
       Serial.println("turn right");
       LAplace = analogRead(LAI);
@@ -248,7 +249,7 @@ static int thread5_entry(struct pt * pt)
   {
 
     //backward buzz or alarm
-    if ( digitalRead(M12) == 0 || digitalRead(M31) == 0 ) {
+    if ( (digitalRead(M12) == 0 || digitalRead(M31) == 0) && !isStop ) {
 
       Serial.println("alarm");
 
@@ -270,7 +271,7 @@ static int thread6_entry(struct pt * pt)
   while (1)
   {
 
-    if ( digitalRead(M41) == 0 ) {
+    if ( digitalRead(M41) == 0 && !isStop ) {
 
       Serial.println("left sign");
       digitalWrite(LLED, HIGH);
@@ -290,7 +291,7 @@ static int thread7_entry(struct pt * pt)
   PT_BEGIN(pt);
   while (1)
   {
-    if ( digitalRead(M42) == 0 ) {
+    if ( digitalRead(M42) == 0 && !isStop ) {
 
       Serial.println("right sign");
       digitalWrite(RLED, HIGH);
@@ -313,6 +314,7 @@ static int thread8_entry(struct pt * pt)
     if ( isChange(M32) == 1 ) {
 
       Serial.println("break");
+      isStop = true;
       digitalWrite(BREAK, LOW);
       digitalWrite(R3, LOW);
       digitalWrite(R4, LOW);
@@ -320,6 +322,9 @@ static int thread8_entry(struct pt * pt)
 
       digitalWrite(LAO1, LOW);
       digitalWrite(LAO2, LOW);
+
+      PT_TIMER_DELAY(pt, 5000);
+      isStop = false;
     }
 
     PT_YIELD(pt); //Check the other events.
