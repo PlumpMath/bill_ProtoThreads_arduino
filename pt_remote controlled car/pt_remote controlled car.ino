@@ -3,7 +3,6 @@
 
 #include "pt.h"
 static struct pt thread1, thread2, thread3, thread4, thread5, thread6, thread7, thread8;
-unsigned char i;
 
 int laststate[8] = {1};
 
@@ -338,7 +337,7 @@ int isChange(int pinNum) {
     Serial.print(pinNum);
     Serial.print(" is ");
     Serial.println(digitalRead(pinNum));
-    laststate[i] = digitalRead(pinNum);
+    laststate[pinNum - 30] = digitalRead(pinNum);
 
     return 1;
   }
