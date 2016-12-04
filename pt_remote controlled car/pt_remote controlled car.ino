@@ -88,6 +88,9 @@ static int thread1_entry(struct pt *pt)
   while (1)
   {
     //if forward btn is pressed
+    if(isChange(M11) == 1)
+      isStop = false;
+    
     if ( isStop == false && digitalRead(M11) == 0 ) {
 
       digitalWrite(BREAK, LOW);
@@ -128,6 +131,9 @@ static int thread2_entry(struct pt *pt)
   PT_BEGIN(pt);
   while (1)
   {
+    if(isChange(M12) == true)
+      isStop = false;
+      
     if ( isStop == false && digitalRead(M12) == 0 ) {
 
       digitalWrite(BREAK, LOW);
@@ -168,6 +174,8 @@ static int thread3_entry(struct pt *pt)
   PT_BEGIN(pt);
   while (1)
   {
+    if(isChange(M21) == true)
+      isStop = false;
 
     if ( isStop == false && digitalRead(M21) == 0 ) {
 
@@ -209,6 +217,9 @@ static int thread4_entry(struct pt * pt)
   PT_BEGIN(pt);
   while (1)
   {
+    if(isChange(M22) == true)
+      isStop = false;
+      
     if ( isStop == false && digitalRead(M22) == 0 ) {
 
       Serial.println("turn right");
@@ -247,7 +258,9 @@ static int thread5_entry(struct pt * pt)
   PT_BEGIN(pt);
   while (1)
   {
-
+    if(isChange(M12) == true || isChange(M31) == true)
+      isStop = false;
+      
     //backward buzz or alarm
     if ( isStop == false && (digitalRead(M12) == 0 || digitalRead(M31) == 0) ) {
 
@@ -270,7 +283,9 @@ static int thread6_entry(struct pt * pt)
   PT_BEGIN(pt);
   while (1)
   {
-
+    if(isChange(M41) == true)
+      isStop = false;
+      
     if ( isStop == false && digitalRead(M41) == 0 ) {
 
       Serial.println("left sign");
@@ -291,6 +306,9 @@ static int thread7_entry(struct pt * pt)
   PT_BEGIN(pt);
   while (1)
   {
+    if(isChange(M42) == true)
+      isStop = false;
+      
     if ( isStop == false && digitalRead(M42) == 0 ) {
 
       Serial.println("right sign");
@@ -342,6 +360,7 @@ static int thread8_entry(struct pt * pt)
 int isChange(int pinNum) {
 
   if ( digitalRead(pinNum) != laststate[pinNum - 30] && laststate[pinNum - 30] == 1 ) {
+    
     Serial.print("the state of pin");
     Serial.print(pinNum);
     Serial.print(" is ");
