@@ -274,9 +274,9 @@ static int thread6_entry(struct pt * pt)
 
       Serial.println("left sign");
       digitalWrite(LLED, HIGH);
-      PT_TIMER_DELAY(pt, 10000);
+      PT_TIMER_DELAY(pt, 1000);
       digitalWrite(LLED, LOW);
-      PT_TIMER_DELAY(pt, 10000);
+      PT_TIMER_DELAY(pt, 1000);
     }
 
     PT_YIELD(pt); //Check the other events.
@@ -294,9 +294,9 @@ static int thread7_entry(struct pt * pt)
 
       Serial.println("right sign");
       digitalWrite(RLED, HIGH);
-      PT_TIMER_DELAY(pt, 10000);
+      PT_TIMER_DELAY(pt, 1000);
       digitalWrite(RLED, LOW);
-      PT_TIMER_DELAY(pt, 10000);
+      PT_TIMER_DELAY(pt, 1000);
     }
 
     PT_YIELD(pt); //Check the other events.
