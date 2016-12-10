@@ -187,16 +187,18 @@ static int thread2_entry(struct pt *pt)
 //turn left
 static int thread3_entry(struct pt *pt)
 {
+  int sensorValue;
+  
   PT_BEGIN(pt);
   while (1) {
     if (state3 == 1 && !flag3) {
 
       flag3 = 1;
 
-      int sensorValue = analogRead(A0);
+      sensorValue = analogRead(A0);
       sensorValue = map(sensorValue, 0, 1023, 0, 49);
 
-      if (sensorValue < = 45) {
+      if (sensorValue <= 45) {
         digitalWrite(LAEN, HIGH);
         digitalWrite(LAM1, HIGH);
         digitalWrite(LAM2, HIGH);
