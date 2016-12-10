@@ -67,6 +67,11 @@ void setup() {
   flag6 = 0;
   flag7 = 0;
 
+  //disable en of wheel
+  digitalWrite(LFEN, HIGH);
+  digitalWrite(RFEN, HIGH);
+  digitalWrite(BEN, HIGH);
+
   //Initialize the Threads
   PT_INIT(&thread1);
   PT_INIT(&thread2);
@@ -90,21 +95,23 @@ static int thread1_entry(struct pt *pt)
 
       flag1 = 1;
 
+      Serial.println("enable forward");
+
       //disable en of wheel
       digitalWrite(LFEN, HIGH);
       digitalWrite(RFEN, HIGH);
       digitalWrite(BEN, HIGH);
 
-      digitalWrite(LFM1, HIGH);
-      digitalWrite(LFM2, HIGH);
-      digitalWrite(RFM1, HIGH);
-      digitalWrite(RFM2, HIGH);
-      digitalWrite(BM1, HIGH);
-      digitalWrite(BM2, HIGH);
-      analogWrite(LFSpeedCtrl,255);
-      analogWrite(RFSpeedCtrl,255);
-      analogWrite(BSpeedCtrl,255);
-      
+      digitalWrite(LFM1, LOW);
+      digitalWrite(LFM2, LOW);
+      digitalWrite(RFM1, LOW);
+      digitalWrite(RFM2, LOW);
+      digitalWrite(BM1, LOW);
+      digitalWrite(BM2, LOW);
+      analogWrite(LFSpeedCtrl, 255);
+      analogWrite(RFSpeedCtrl, 255);
+      analogWrite(BSpeedCtrl, 255);
+
       PT_TIMER_DELAY(pt, 10);
 
       //enable en of wheel
@@ -117,8 +124,10 @@ static int thread1_entry(struct pt *pt)
     }
 
     //forward disable
-    else if (state1 == 0) {
+    else if (state1 == 0 && flag1) {
       flag1 = 0;
+
+      Serial.println("disable forward");
 
       digitalWrite(LFEN, HIGH);
       digitalWrite(RFEN, HIGH);
@@ -142,20 +151,22 @@ static int thread2_entry(struct pt *pt)
 
       flag2 = 1;
 
+      Serial.println("enable forward");
+
       //disable en of wheel
       digitalWrite(LFEN, HIGH);
       digitalWrite(RFEN, HIGH);
       digitalWrite(BEN, HIGH);
 
-      digitalWrite(LFM1, LOW);
-      digitalWrite(LFM2, LOW);
-      digitalWrite(RFM1, LOW);
-      digitalWrite(RFM2, LOW);
-      digitalWrite(BM1, LOW);
-      digitalWrite(BM2, LOW);
-      analogWrite(LFSpeedCtrl,200);
-      analogWrite(RFSpeedCtrl,200);
-      analogWrite(BSpeedCtrl,200);
+      digitalWrite(LFM1, HIGH);
+      digitalWrite(LFM2, HIGH);
+      digitalWrite(RFM1, HIGH);
+      digitalWrite(RFM2, HIGH);
+      digitalWrite(BM1, HIGH);
+      digitalWrite(BM2, HIGH);
+      analogWrite(LFSpeedCtrl, 200);
+      analogWrite(RFSpeedCtrl, 200);
+      analogWrite(BSpeedCtrl, 200);
 
       PT_TIMER_DELAY(pt, 10);
 
@@ -168,9 +179,11 @@ static int thread2_entry(struct pt *pt)
       digitalWrite(BreakLight, LOW);
     }
 
-    else if (state2 == 0) {
+    else if (state2 == 0 && flag2) {
 
       flag2 = 0;
+
+      Serial.println("disable backward");
 
       digitalWrite(LFEN, HIGH);
       digitalWrite(RFEN, HIGH);
@@ -188,7 +201,7 @@ static int thread2_entry(struct pt *pt)
 static int thread3_entry(struct pt *pt)
 {
   int sensorValue;
-  
+
   PT_BEGIN(pt);
   while (1) {
     if (state3 == 1 && !flag3) {
@@ -209,8 +222,8 @@ static int thread3_entry(struct pt *pt)
       }
     }
 
-    else if(state3 == 0) {
-      
+    else if (state3 == 0  && flag3) {
+
     }
 
     PT_YIELD(pt); //Check the other events.
