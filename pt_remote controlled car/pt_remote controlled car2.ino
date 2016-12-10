@@ -72,6 +72,8 @@ void setup() {
   digitalWrite(RFEN, HIGH);
   digitalWrite(BEN, HIGH);
 
+  digitalWrite(LAEN, HIGH);
+
   //Initialize the Threads
   PT_INIT(&thread1);
   PT_INIT(&thread2);
@@ -206,12 +208,12 @@ static int thread3_entry(struct pt *pt)
   while (1) {
     if (state3 == 1 && !flag3) {
 
-      flag3 = 1;
-
       sensorValue = analogRead(A0);
       sensorValue = map(sensorValue, 0, 1023, 0, 49);
 
       if (sensorValue <= 45) {
+        
+        flag3 = 1;
         digitalWrite(LAEN, HIGH);
         digitalWrite(LAM1, HIGH);
         digitalWrite(LAM2, HIGH);
@@ -224,6 +226,8 @@ static int thread3_entry(struct pt *pt)
 
     else if (state3 == 0  && flag3) {
 
+      flag3 = 0;
+      digitalWrite(LAEN, HIGH);
     }
 
     PT_YIELD(pt); //Check the other events.
