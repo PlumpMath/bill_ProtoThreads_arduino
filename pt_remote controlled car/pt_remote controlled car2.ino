@@ -238,13 +238,33 @@ static int thread3_entry(struct pt *pt)
 //turn right
 static int thread4_entry(struct pt * pt)
 {
-  static int LAplace;
+  int sensorValue;
+  
   PT_BEGIN(pt);
   while (1) {
-    if (state4 == 1)
-      digitalWrite(5, HIGH);
-    else
-      digitalWrite(5, LOW);
+    if (state4 == 1 && !flag4) {
+
+      sensorValue = analogRead(A0);
+      sensorValue = map(sensorValue, 0, 1023, 0, 49);
+
+      if (sensorValue >= 10) {
+        
+        flag4 = 1;
+        digitalWrite(LAEN, HIGH);
+        digitalWrite(LAM1, LOW);
+        digitalWrite(LAM2, LOW);
+
+        PT_TIMER_DELAY(pt, 10);
+
+        digitalWrite(LAEN, LOW);
+      }
+    }
+
+    else if (state4 == 0  && flag4) {
+
+      flag4 = 0;
+      digitalWrite(LAEN, HIGH);
+    }
 
     PT_YIELD(pt); //Check the other events.
   }
