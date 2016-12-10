@@ -151,13 +151,17 @@ static int thread8_entry(struct pt * pt) {
 
         Serial.println(p);
         if ( 11 == p ) state1 = 1;
-        else if ( 12 == p ) state1 = 0;
+        else if ( 12 == p ) {
+          state1 = 0;
+          state2 = 0;
+        }
         else if ( 21 == p ) state2 = 1;
-        else if ( 22 == p ) state2 = 0;
+        else if ( 22 == p ) {
+          state3 = 0;
+          state4 = 0;
+        }
         else if ( 31 == p ) state3 = 1;
-        else if ( 32 == p ) state3 = 0;
         else if ( 41 == p ) state4 = 1;
-        else if ( 42 == p ) state4 = 0;
         else if ( 51 == p ) state5 = 1;
         else if ( 52 == p ) state5 = 0;
         else if ( 61 == p ) state6 = 1;
