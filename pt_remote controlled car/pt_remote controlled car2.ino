@@ -211,6 +211,9 @@ static int thread3_entry(struct pt *pt)
       sensorValue = analogRead(A0);
       sensorValue = map(sensorValue, 0, 1023, 0, 49);
 
+      Serial.print("turn left ");
+      Serial.println(sensorValue);
+
       if (sensorValue >= 30) {
         
         flag3 = 1;
@@ -247,10 +250,11 @@ static int thread4_entry(struct pt * pt)
       sensorValue = analogRead(A0);
       sensorValue = map(sensorValue, 0, 1023, 0, 49);
 
+      Serial.print("turn right ");
+      Serial.println(sensorValue);
+      
       if (sensorValue <= 40) {
 
-        Serial.println("turn right"+sensorValue);
-        
         flag4 = 1;
         digitalWrite(LAEN, HIGH);
         digitalWrite(LAM1, LOW);
