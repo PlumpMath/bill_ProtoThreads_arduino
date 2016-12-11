@@ -113,7 +113,7 @@ static int thread1_entry(struct pt *pt)
       digitalWrite(BM2, LOW);
       analogWrite(LFSpeedCtrl, 255);
       analogWrite(RFSpeedCtrl, 255);
-      analogWrite(BSpeedCtrl, 235);
+      analogWrite(BSpeedCtrl, 245);
 
       PT_TIMER_DELAY(pt, 10);
 
@@ -167,9 +167,9 @@ static int thread2_entry(struct pt *pt)
       digitalWrite(RFM2, HIGH);
       digitalWrite(BM1, HIGH);
       digitalWrite(BM2, HIGH);
-      analogWrite(LFSpeedCtrl, 200);
-      analogWrite(RFSpeedCtrl, 200);
-      analogWrite(BSpeedCtrl, 200);
+      analogWrite(LFSpeedCtrl, 255);
+      analogWrite(RFSpeedCtrl, 255);
+      analogWrite(BSpeedCtrl, 245);
 
       PT_TIMER_DELAY(pt, 10);
 
