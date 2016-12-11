@@ -22,7 +22,7 @@ const int LAEN = 39;
 const int LAM1 = 40;
 const int LAM2 = 41;
 //lights
-const int LLight = 28;
+const int LLight = 22;
 const int RLight = 24;
 const int BreakLight = 26;
 //speed
@@ -113,7 +113,7 @@ static int thread1_entry(struct pt *pt)
       digitalWrite(BM2, LOW);
       analogWrite(LFSpeedCtrl, 255);
       analogWrite(RFSpeedCtrl, 255);
-      analogWrite(BSpeedCtrl, 255);
+      analogWrite(BSpeedCtrl, 235);
 
       PT_TIMER_DELAY(pt, 10);
 
@@ -329,7 +329,7 @@ static int thread7_entry(struct pt * pt)
 {
   PT_BEGIN(pt);
   while (1) {
-    if (state5 == 1) {
+    if (state7 == 1) {
 
       digitalWrite(RLight, HIGH);
       PT_TIMER_DELAY(pt, 1000);
