@@ -22,9 +22,9 @@ const int LAEN = 39;
 const int LAM1 = 40;
 const int LAM2 = 41;
 //lights
-const int LLight = 22;
-const int RLight = 23;
-const int BreakLight = 24;
+const int LLight = 28;
+const int RLight = 24;
+const int BreakLight = 26;
 //speed
 const int LFSpeedCtrl = 10;
 const int RFSpeedCtrl = 9;
@@ -73,6 +73,7 @@ void setup() {
   digitalWrite(BEN, HIGH);
 
   digitalWrite(LAEN, HIGH);
+  tone(5, 36000);
 
   //Initialize the Threads
   PT_INIT(&thread1);
@@ -279,30 +280,44 @@ static int thread4_entry(struct pt * pt)
   PT_END(pt);
 }
 
-//alarm
+//left sign
 static int thread5_entry(struct pt * pt)
 {
   PT_BEGIN(pt);
   while (1) {
-    if (state5 == 1)
-      digitalWrite(6, HIGH);
-    else
-      digitalWrite(6, LOW);
+    if (state5 == 1) {
+
+      digitalWrite(LLight, HIGH);
+      PT_TIMER_DELAY(pt, 1000);
+      digitalWrite(LLight, LOW);
+      PT_TIMER_DELAY(pt, 1000);
+    }
+
+    else {
+      digitalWrite(LLight, LOW);
+    }
 
     PT_YIELD(pt); //Check the other events.
   }
   PT_END(pt);
 }
 
-//left sign
+//alarm
 static int thread6_entry(struct pt * pt)
 {
   PT_BEGIN(pt);
   while (1) {
-    if (state6 == 1)
-      digitalWrite(7, HIGH);
-    else
-      digitalWrite(7, LOW);
+    if (state6 == 1 || state2 == 1) {
+
+      tone(5, 100);
+      PT_TIMER_DELAY(pt, 1000);
+      tone(5, 36000);
+      PT_TIMER_DELAY(pt, 1000);
+    }
+
+    else {
+      tone(5, 36000);
+    }
 
     PT_YIELD(pt); //Check the other events.
   }
@@ -314,10 +329,17 @@ static int thread7_entry(struct pt * pt)
 {
   PT_BEGIN(pt);
   while (1) {
-    if (state7 == 1)
-      digitalWrite(8, HIGH);
-    else
-      digitalWrite(8, LOW);
+    if (state5 == 1) {
+
+      digitalWrite(RLight, HIGH);
+      PT_TIMER_DELAY(pt, 1000);
+      digitalWrite(RLight, LOW);
+      PT_TIMER_DELAY(pt, 1000);
+    }
+
+    else {
+      digitalWrite(RLight, LOW);
+    }
 
     PT_YIELD(pt); //Check the other events.
   }
